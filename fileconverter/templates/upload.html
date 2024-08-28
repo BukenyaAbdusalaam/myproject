@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Upload File</title>
@@ -11,4 +11,173 @@
         <button type="submit">Upload</button>
     </form>
 </body>
+</html> 
+ -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload an Excel File</title>
+    {% load static %}
+
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container Styles */
+        .container {
+            text-align: center;
+        }
+
+        .header-bar {
+            background-color: #ffeb3b;
+            height: 10px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        /* Upload Box Styles */
+        .upload-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            margin: 100px auto;
+        }
+
+        /* Logo Styles */
+        .logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Heading Styles */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* File Upload Styles */
+        .file-upload {
+            margin-bottom: 10px;
+        }
+
+        .custom-file-label {
+            background-color: #42a5f5;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            width: 88%;
+            text-align: center;
+        }
+
+        #file {
+            display: none;
+        }
+
+        /* Error Message Styles */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        /* Button Styles */
+        .upload-button {
+            background-color: #ffeb3b;
+            color: #0d47a1;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            text-align: center;
+            display: block;
+        }
+
+        .upload-button:hover {
+            background-color: #ffd600;
+        }
+
+        .upload-logo {
+            width: 150px;
+            /* Adjust the size as needed */
+            margin-bottom: 20px;
+            /* Space below the logo */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header-bar"></div>
+        <div class="upload-box">
+            <img src="https://seeklogo.com/images/U/ura-uganda-revenue-authority-logo-0F9199017A-seeklogo.com.png"
+                alt="Company Logo" class="upload-logo">
+            <h1>Upload an Excel File</h1>
+            <form id="uploadForm" action="{% url 'upload_file' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="file-upload">
+                    <label for="file" class="custom-file-label" id="file-label">Choose file</label>
+                    <input type="file" id="file" name="file" required>
+                </div>
+                <div class="error-message" id="error-message">Please upload a valid Excel file (.xls or .xlsx).</div>
+                <button type="submit" class="upload-button">Upload the Excel file</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Update the label to show the selected file name
+        document.getElementById('file').addEventListener('change', function () {
+            var fileName = this.files[0].name;
+            document.getElementById('file-label').textContent = fileName;
+        });
+
+        // Form submission validation
+        document.getElementById('uploadForm').addEventListener('submit', function (event) {
+            var fileInput = document.getElementById('file');
+            var filePath = fileInput.value;
+            var allowedExtensions = /(\.xls|\.xlsx)$/i;
+            var errorMessage = document.getElementById('error-message');
+
+            // Check if the selected file has a valid extension
+            if (!allowedExtensions.exec(filePath)) {
+                errorMessage.style.display = 'block'; // Show error message
+                event.preventDefault(); // Prevent form submission
+                fileInput.value = ''; // Clear the file input
+                document.getElementById('file-label').textContent = 'Choose file'; // Reset label
+                return false;
+            } else {
+                errorMessage.style.display = 'none'; // Hide error message if file is valid
+            }
+        });
+    </script>
+</body>
+
 </html>
