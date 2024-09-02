@@ -32,8 +32,8 @@ def generate_txt_files(excel_file):
     txt_files = {}
     
     for sheet_name in xls.sheet_names:
-        df = pd.read_excel(xls, sheet_name=sheet_name, skiprows=4)
-
+        df = pd.read_excel(xls, sheet_name=sheet_name )
+# skiprows=4
         # Replace NaN values with 0
         df.fillna(0, inplace=True)
 
